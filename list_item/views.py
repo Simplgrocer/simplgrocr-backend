@@ -6,20 +6,20 @@ from rest_framework.response import Response
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 
-from .models import ListProduct
-from .serializers import ListProductSerializer
+from .models import ListItem
+from .serializers import ListItemSerializer
 
 
-class ListProductModelViewSet(viewsets.ModelViewSet):
-    queryset = ListProduct.objects.all()
+class ListItemModelViewSet(viewsets.ModelViewSet):
+    queryset = ListItem.objects.all()
 
     permission_classes = [IsAuthenticated]
 
-    serializer_class = ListProductSerializer
+    serializer_class = ListItemSerializer
 
     @extend_schema(
-        request=ListProductSerializer,
-        responses={201: ListProductSerializer()},
+        request=ListItemSerializer,
+        responses={201: ListItemSerializer()},
     )
     def create(self, request, *args, **kwargs):
         request.data["user"] = request.user.id
@@ -27,7 +27,7 @@ class ListProductModelViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        responses={200: ListProductSerializer(many=True)},
+        responses={200: ListItemSerializer(many=True)},
     )
     def list(self, request, *args, **kwargs):
         queryset = List.objects.filter(user=request.user)

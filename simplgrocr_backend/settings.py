@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "drf_spectacular",
     "list",
-    "list_product",
+    "list_item",
 ]
 
 MIDDLEWARE = [

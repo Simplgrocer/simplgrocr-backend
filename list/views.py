@@ -8,7 +8,7 @@ from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiPara
 
 from .models import List
 from .serializers import ListSerializer
-from list_product.serializers import ListProductSerializer
+from list_item.serializers import ListItemSerializer
 
 
 class ListModelViewSet(viewsets.ModelViewSet):
@@ -39,11 +39,11 @@ class ListModelViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["post"], url_path="product")
     @extend_schema(
-        request=ListProductSerializer,
-        responses={201: ListProductSerializer()},
+        request=ListItemSerializer,
+        responses={201: ListItemSerializer()},
     )
     def create_product(self, request, *args, **kwargs):
-        serializer = ListProductSerializer(data=request.data)
+        serializer = ListItemSerializer(data=request.data)
         if serializer.is_valid():
             # Extracting list id from request data
             list_id = request.data.get("list")
@@ -59,10 +59,10 @@ class ListModelViewSet(viewsets.ModelViewSet):
             serializer.validated_data["list"] = list_instance
 
             # Save the list product
-            list_product = serializer.save()
+            list_item = serializer.save()
 
             return Response(
-                ListProductSerializer(list_product).data, status=status.HTTP_201_CREATED
+                ListItemSerializer(list_item).data, status=status.HTTP_201_CREATED
             )
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -11,7 +11,7 @@ class MeasurementUnit(models.Model):
         return self.name
 
 
-class ListProduct(models.Model):
+class ListItem(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
     measurement_unit = models.ForeignKey(MeasurementUnit, on_delete=models.CASCADE)
