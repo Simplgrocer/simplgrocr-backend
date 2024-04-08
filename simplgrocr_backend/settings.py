@@ -16,7 +16,12 @@ SECRET_KEY = "django-insecure-)u+cvkifeigjb*t_19&1(vk#py-ypsa6=t$it1z4a=6z^k%oqa
 
 DEBUG = True
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "host.docker.internal"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "host.docker.internal",
+    "127.0.0.1",
+    ".vercel.app",
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
