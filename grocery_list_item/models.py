@@ -15,7 +15,6 @@ class GroceryListItem(models.Model):
     rate_measurement_unit = models.CharField(max_length=8, choices=MEASUREMENT_UNITS)
     rate = models.FloatField()
     quantity_measurement_unit = models.CharField(max_length=8, choices=MEASUREMENT_UNITS)
-    per_measurement_unit_price = models.FloatField()
     quantity = models.FloatField()
     price = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)

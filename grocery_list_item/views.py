@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 
+from grocery_list.models import GroceryList
+
 from .models import GroceryListItem
 from .serializers import GroceryListItemSerializer
 
