@@ -6,21 +6,21 @@ from rest_framework.response import Response
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 
-from .models import List
-from .serializers import ListSerializer
-from list_item.serializers import ListItemSerializer
+from .models import GroceryList
+from .serializers import GroceryListSerializer
+from grocery_list_item.serializers import GroceryListItemSerializer
 
 
-class ListModelViewSet(viewsets.ModelViewSet):
-    queryset = List.objects.all()
+class GroceryListModelViewSet(viewsets.ModelViewSet):
+    queryset = GroceryList.objects.all()
 
     permission_classes = [IsAuthenticated]
 
-    serializer_class = ListSerializer
+    serializer_class = GroceryListSerializer
 
     @extend_schema(
-        request=ListSerializer,
-        responses={201: ListSerializer()},
+        request=GroceryListSerializer,
+        responses={201: GroceryListSerializer()},
     )
     def create(self, request, *args, **kwargs):
         request.data["user"] = request.user.id
@@ -28,10 +28,10 @@ class ListModelViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     @extend_schema(
-        responses={200: ListSerializer(many=True)},
+        responses={200: GroceryListSerializer(many=True)},
     )
     def list(self, request, *args, **kwargs):
-        queryset = List.objects.filter(user=request.user)
+        queryset = GroceryList.objects.filter(user=request.user)
 
         serializer = self.serializer_class(queryset, many=True)
 
@@ -39,19 +39,19 @@ class ListModelViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["post"], url_path="product")
     @extend_schema(
-        request=ListItemSerializer,
-        responses={201: ListItemSerializer()},
+        request=GroceryListItemSerializer,
+        responses={201: GroceryListItemSerializer()},
     )
     def create_product(self, request, *args, **kwargs):
-        serializer = ListItemSerializer(data=request.data)
+        serializer = GroceryListItemSerializer(data=request.data)
         if serializer.is_valid():
             # Extracting list id from request data
             list_id = request.data.get("list")
             try:
-                list_instance = List.objects.get(id=list_id)
-            except List.DoesNotExist:
+                list_instance = GroceryList.objects.get(id=list_id)
+            except GroceryList.DoesNotExist:
                 return Response(
-                    {"error": "List does not exist."},
+                    {"error": "GroceryList does not exist."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
@@ -62,7 +62,7 @@ class ListModelViewSet(viewsets.ModelViewSet):
             list_item = serializer.save()
 
             return Response(
-                ListItemSerializer(list_item).data, status=status.HTTP_201_CREATED
+                GroceryListItemSerializer(list_item).data, status=status.HTTP_201_CREATED
             )
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

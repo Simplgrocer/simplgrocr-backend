@@ -5,7 +5,7 @@ from . import views
 
 router = DefaultRouter()
 
-router.register("list", views.ListModelViewSet, basename="list")
+router.register("grocery-list", views.GroceryListModelViewSet, basename="grocery_list")
 
 urlpatterns = [
     path("", include(router.urls)),
