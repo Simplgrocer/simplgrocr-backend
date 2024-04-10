@@ -26,7 +26,7 @@ urlpatterns = [
                     SpectacularRedocView.as_view(url_name="schema"),
                     name="redoc",
                 ),
-                path("", include("list.urls")),
+                path("", include("grocery_list.urls")),
                 # path("", include("list_item.urls")),
                 path("", include("user.urls")),
             ]

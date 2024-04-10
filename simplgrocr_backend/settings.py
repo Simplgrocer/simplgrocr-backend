@@ -35,8 +35,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
-    "list",
-    "list_item",
+    "grocery_list",
+    "grocery_list_item",
 ]
 
 MIDDLEWARE = [
@@ -71,14 +71,18 @@ TEMPLATES = [
 WSGI_APPLICATION = "simplgrocr_backend.wsgi.application"
 
 DATABASES = {
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": DATABASE_ENV_VARS["DATABASE_NAME"],
+    #     "USER": DATABASE_ENV_VARS["DATABASE_USER"],
+    #     "PASSWORD": DATABASE_ENV_VARS["DATABASE_PASSWORD"],
+    #     "HOST": DATABASE_ENV_VARS["DATABASE_HOST"],
+    #     # "PORT": DATABASE_ENV_VARS["DATABASE_PORT"],
+    # },
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": DATABASE_ENV_VARS["DATABASE_NAME"],
-        "USER": DATABASE_ENV_VARS["DATABASE_USER"],
-        "PASSWORD": DATABASE_ENV_VARS["DATABASE_PASSWORD"],
-        "HOST": DATABASE_ENV_VARS["DATABASE_HOST"],
-        # "PORT": DATABASE_ENV_VARS["DATABASE_PORT"],
-    },
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "db.sqlite3",
+    }
 }
 
 REST_FRAMEWORK = {
