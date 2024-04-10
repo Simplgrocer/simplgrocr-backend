@@ -1,0 +1,16 @@
+services:
+  database:
+    image: postgres:latest
+    container_name: simplgrocr-database
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: simplgrocr
+    volumes:
+      - simplgrocr-database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  simplgrocr-database: {}
