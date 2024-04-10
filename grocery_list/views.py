@@ -37,32 +37,53 @@ class GroceryListModelViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
-    @action(detail=True, methods=["post"], url_path="product")
+    @action(detail=True, methods=["post"], url_path="item")
     @extend_schema(
         request=GroceryListItemSerializer,
         responses={201: GroceryListItemSerializer()},
     )
-    def create_product(self, request, *args, **kwargs):
-        serializer = GroceryListItemSerializer(data=request.data)
-        if serializer.is_valid():
-            # Extracting list id from request data
-            list_id = request.data.get("list")
-            try:
-                list_instance = GroceryList.objects.get(id=list_id)
-            except GroceryList.DoesNotExist:
-                return Response(
-                    {"error": "GroceryList does not exist."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+    def create_grocery_list_item(self, request, *args, **kwargs):
+        grocery_list = get_object_or_404(GroceryList, pk=kwargs["pk"])
 
-            # Associate the current user with the list product
-            serializer.validated_data["list"] = list_instance
-
-            # Save the list product
-            list_item = serializer.save()
-
+        if not grocery_list.user == request.user:
             return Response(
-                GroceryListItemSerializer(list_item).data, status=status.HTTP_201_CREATED
+                {"error": "You are not authorized to perform this action."},
+                status=status.HTTP_401_UNAUTHORIZED,
             )
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        request.data["grocery_list"] = kwargs["pk"]
+
+        serializer = GroceryListItemSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=True, methods=["post"], url_path="items")
+    @extend_schema(
+        request=GroceryListItemSerializer,
+        responses={201: GroceryListItemSerializer()},
+    )
+    def create_grocery_list_items(self, request, *args, **kwargs):
+        grocery_list = get_object_or_404(GroceryList, pk=kwargs["pk"])
+
+        if not grocery_list.user == request.user:
+            return Response(
+                {"error": "You are not authorized to perform this action."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        for item in request.data:
+            item["grocery_list"] = kwargs["pk"]
+
+        serializer = GroceryListItemSerializer(data=request.data, many=True)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
