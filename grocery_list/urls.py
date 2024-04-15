@@ -1,12 +1,23 @@
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework_nested import routers
+
+from grocery_list_item.views import GroceryListItemViewSet
 
 from . import views
 
-router = DefaultRouter()
+router = routers.DefaultRouter()
 
-router.register("grocery-list", views.GroceryListModelViewSet, basename="grocery_list")
+router.register(r"grocery-lists", views.GroceryListViewSet)
+
+grocery_list_router = routers.NestedSimpleRouter(
+    router, r"grocery-lists", lookup="grocery_list"
+)
+
+grocery_list_router.register(
+    r"items", GroceryListItemViewSet, basename="grocery-list-items"
+)
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("", include(grocery_list_router.urls)),
 ]

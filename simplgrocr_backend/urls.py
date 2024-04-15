@@ -7,7 +7,7 @@ from drf_spectacular.views import (
 )
 
 
-prefix = "api/v1/"
+prefix = "api/"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
