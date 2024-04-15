@@ -10,7 +10,7 @@ class GroceryListItem(models.Model):
     ]
 
     name = models.CharField(max_length=100, unique=True)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     rate_measurement_quantity = models.FloatField()
     rate_measurement_unit = models.CharField(max_length=8, choices=MEASUREMENT_UNITS)
     rate = models.FloatField()
