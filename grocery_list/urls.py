@@ -18,6 +18,6 @@ grocery_list_router.register(
 )
 
 urlpatterns = [
-    path("", include(router.urls)),
-    path("", include(grocery_list_router.urls)),
+    path("users/", include(router.urls)),
+    path("users/", include(grocery_list_router.urls)),
 ]
