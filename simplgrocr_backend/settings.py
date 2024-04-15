@@ -99,7 +99,7 @@ SPECTACULAR_SETTINGS = {
 }
 
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://host.docker.internal:3000"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:4200", "http://host.docker.internal:3000"]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
