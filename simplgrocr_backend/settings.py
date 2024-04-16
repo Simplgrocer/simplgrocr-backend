@@ -4,13 +4,13 @@ from common.utils.env import get_env_vars
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DATABASE_ENV_VARS = get_env_vars(
-    "DATABASE_NAME",
-    "DATABASE_USER",
-    "DATABASE_PASSWORD",
-    "DATABASE_HOST",
-    # "DATABASE_PORT",
-)
+# DATABASE_ENV_VARS = get_env_vars(
+#     "DATABASE_NAME",
+#     "DATABASE_USER",
+#     "DATABASE_PASSWORD",
+#     "DATABASE_HOST",
+#     # "DATABASE_PORT",
+# )
 
 SECRET_KEY = "django-insecure-)u+cvkifeigjb*t_19&1(vk#py-ypsa6=t$it1z4a=6z^k%oqa"
 
