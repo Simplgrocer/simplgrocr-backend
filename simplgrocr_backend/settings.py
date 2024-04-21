@@ -23,11 +23,11 @@ ALLOWED_HOSTS = [
     "https://simplgrocr.netlify.app",
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",
-    "http://127.0.0.1",
-    "https://simplgrocr.netlify.app",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:4200",
+#     "http://127.0.0.1",
+#     "https://simplgrocr.netlify.app",
+# ]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -75,6 +75,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "simplgrocr_backend.wsgi.application"
+
+CORS_ALLOW_ALL_ORIGINS=True
 
 DATABASES = {
     "default": {
