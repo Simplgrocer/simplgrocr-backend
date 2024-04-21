@@ -16,18 +16,22 @@ SECRET_KEY = "django-insecure-)u+cvkifeigjb*t_19&1(vk#py-ypsa6=t$it1z4a=6z^k%oqa
 
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "http://localhost:4200",
-    "host.docker.internal",
-    "127.0.0.1",
-    "https://simplgrocr.netlify.app",
-]
+# ALLOWED_HOSTS = [
+#     "http://localhost:4200",
+#     "host.docker.internal",
+#     "127.0.0.1",
+#     "https://simplgrocr.netlify.app",
+# ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:4200",
-    "http://127.0.0.1",
-    "https://simplgrocr.netlify.app/",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:4200",
+#     "http://127.0.0.1",
+#     "https://simplgrocr.netlify.app/",
+# ]
+
+ALLOWED_HOSTS=['*']
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -75,8 +79,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "simplgrocr_backend.wsgi.application"
-
-# CORS_ALLOW_ALL_ORIGINS=True
 
 DATABASES = {
     "default": {
