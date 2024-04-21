@@ -4,13 +4,13 @@ from common.utils.env import get_env_vars
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# DATABASE_ENV_VARS = get_env_vars(
-#     "DATABASE_NAME",
-#     "DATABASE_USER",
-#     "DATABASE_PASSWORD",
-#     "DATABASE_HOST",
-#     # "DATABASE_PORT",
-# )
+DATABASE_ENV_VARS = get_env_vars(
+    "DATABASE_NAME",
+    "DATABASE_USER",
+    "DATABASE_PASSWORD",
+    "DATABASE_HOST",
+    # "DATABASE_PORT",
+)
 
 SECRET_KEY = "django-insecure-)u+cvkifeigjb*t_19&1(vk#py-ypsa6=t$it1z4a=6z^k%oqa"
 
@@ -25,9 +25,8 @@ ALLOWED_HOSTS = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
-    "host.docker.internal",
-    "127.0.0.1",
-    ".vercel.app",
+    "http://127.0.0.1",
+    "https://.vercel.app",
 ]
 
 INSTALLED_APPS = [
@@ -78,18 +77,18 @@ TEMPLATES = [
 WSGI_APPLICATION = "simplgrocr_backend.wsgi.application"
 
 DATABASES = {
-    # "default": {
-    #     "ENGINE": "django.db.backends.postgresql",
-    #     "NAME": DATABASE_ENV_VARS["DATABASE_NAME"],
-    #     "USER": DATABASE_ENV_VARS["DATABASE_USER"],
-    #     "PASSWORD": DATABASE_ENV_VARS["DATABASE_PASSWORD"],
-    #     "HOST": DATABASE_ENV_VARS["DATABASE_HOST"],
-    #     # "PORT": DATABASE_ENV_VARS["DATABASE_PORT"],
-    # },
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "db.sqlite3",
-    }
+        "ENGINE": "django_pg8000",
+        "NAME": DATABASE_ENV_VARS["DATABASE_NAME"],
+        "USER": DATABASE_ENV_VARS["DATABASE_USER"],
+        "PASSWORD": DATABASE_ENV_VARS["DATABASE_PASSWORD"],
+        "HOST": DATABASE_ENV_VARS["DATABASE_HOST"],
+        # "PORT": DATABASE_ENV_VARS["DATABASE_PORT"],
+    },
+    # "default": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": "db.sqlite3",
+    # }
 }
 
 REST_FRAMEWORK = {
