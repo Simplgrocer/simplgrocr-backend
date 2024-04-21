@@ -16,11 +16,18 @@ SECRET_KEY = "django-insecure-)u+cvkifeigjb*t_19&1(vk#py-ypsa6=t$it1z4a=6z^k%oqa
 
 DEBUG = True
 
-CORS_ALLOWED_ORIGINS = [
+ALLOWED_HOSTS = [
     "http://localhost:4200",
     "host.docker.internal",
     "127.0.0.1",
     "simplgrocr-ba-git-e6e7c6-dasguptatirthyakamalgmailcoms-projects.vercel.app",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+    "host.docker.internal",
+    "127.0.0.1",
+    ".vercel.app",
 ]
 
 INSTALLED_APPS = [
