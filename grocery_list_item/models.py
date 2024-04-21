@@ -9,7 +9,7 @@ class GroceryListItem(models.Model):
         ("Gram", "Gram"),
     ]
 
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, blank=True)
     description = models.TextField(null=True, blank=True)
     rate_measurement_quantity = models.FloatField()
     rate_measurement_unit = models.CharField(max_length=8, choices=MEASUREMENT_UNITS)
