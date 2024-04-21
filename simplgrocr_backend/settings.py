@@ -20,7 +20,7 @@ ALLOWED_HOSTS = [
     "http://localhost:4200",
     "host.docker.internal",
     "127.0.0.1",
-    "simplgrocr.netlify.app",
+    "https://simplgrocr.netlify.app",
 ]
 
 CORS_ALLOWED_ORIGINS = [
