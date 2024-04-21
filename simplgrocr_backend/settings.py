@@ -17,7 +17,7 @@ SECRET_KEY = "django-insecure-)u+cvkifeigjb*t_19&1(vk#py-ypsa6=t$it1z4a=6z^k%oqa
 DEBUG = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost:4200",
     "host.docker.internal",
     "127.0.0.1",
     ".vercel.app",
@@ -97,9 +97,6 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "SimplGrocr API",
     "VERSION": "1.0.0",
 }
-
-
-CORS_ALLOWED_ORIGINS = ["http://localhost:4200", "http://host.docker.internal:3000"]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
