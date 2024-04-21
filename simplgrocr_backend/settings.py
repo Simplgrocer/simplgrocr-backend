@@ -20,7 +20,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "host.docker.internal",
     "127.0.0.1",
-    ".vercel.app",
+    "simplgrocr-ba-git-e6e7c6-dasguptatirthyakamalgmailcoms-projects.vercel.app",
 ]
 
 INSTALLED_APPS = [
