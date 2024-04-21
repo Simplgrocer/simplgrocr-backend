@@ -20,13 +20,13 @@ ALLOWED_HOSTS = [
     "http://localhost:4200",
     "host.docker.internal",
     "127.0.0.1",
-    "simplgrocr-ba-git-e6e7c6-dasguptatirthyakamalgmailcoms-projects.vercel.app",
+    "simplgrocr.netlify.app",
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "http://127.0.0.1",
-    "https://.vercel.app",
+    "https://simplgrocr.netlify.app",
 ]
 
 INSTALLED_APPS = [
