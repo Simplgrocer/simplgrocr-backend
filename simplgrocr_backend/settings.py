@@ -9,7 +9,7 @@ DATABASE_ENV_VARS = get_env_vars(
     "DATABASE_USER",
     "DATABASE_PASSWORD",
     "DATABASE_HOST",
-    # "DATABASE_PORT",
+    "DATABASE_PORT",
 )
 
 SECRET_KEY = "django-insecure-)u+cvkifeigjb*t_19&1(vk#py-ypsa6=t$it1z4a=6z^k%oqa"
@@ -87,7 +87,7 @@ DATABASES = {
         "USER": DATABASE_ENV_VARS["DATABASE_USER"],
         "PASSWORD": DATABASE_ENV_VARS["DATABASE_PASSWORD"],
         "HOST": DATABASE_ENV_VARS["DATABASE_HOST"],
-        # "PORT": DATABASE_ENV_VARS["DATABASE_PORT"],
+        "PORT": DATABASE_ENV_VARS["DATABASE_PORT"],
     },
     # "default": {
     #     "ENGINE": "django.db.backends.sqlite3",
