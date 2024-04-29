@@ -1,15 +1,15 @@
-import datetime
-import json
-import time
-import requests
+from io import BytesIO
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 
 from common.utils.env import get_env_vars
+from .utils import generate_grocery_list_summary
 from .models import GroceryList
 from .serializers import GroceryListSerializer
 from rest_framework.response import Response
+from django.core.files import File
+from django.http import FileResponse
 
 
 PDFMONKEY_ENV_VARS = get_env_vars(
@@ -39,123 +39,47 @@ class GroceryListViewSet(ModelViewSet):
 
         return super().update(request, *args, **kwargs)
 
-    @action(detail=True, methods=["post"])
+    @action(detail=True, methods=["get"])
     def summary(self, request, pk):
         grocery_list = self.get_object()
         grocery_list_items = grocery_list.items.all()
 
-        grocery_list_dict = {
-            "name": grocery_list.name,
-            "description": grocery_list.description,
-            "total_price": grocery_list.total_price,
-            "groceryListItems": [],
-        }
+        grocery_list_items_list = [
+            (
+                "Name",
+                "Description",
+                "Rate Measurement Quantity",
+                "Rate Measurement Unit",
+                "Rate",
+                "Quantity Measurement Unit",
+                "Quantity",
+                "Price"
+            )
+        ]
 
         for grocery_list_item in grocery_list_items:
-            grocery_list_dict["groceryListItems"].append(
-                {
-                    "name": grocery_list_item.name,
-                    "description": grocery_list_item.description,
-                    "rate_measurement_quantity": grocery_list_item.rate_measurement_quantity,
-                    "rate_measurement_unit": grocery_list_item.rate_measurement_unit,
-                    "rate": grocery_list_item.rate,
-                    "quantity_measurement_unit": grocery_list_item.quantity_measurement_unit,
-                    "quantity": grocery_list_item.quantity,
-                    "price": grocery_list_item.price,
-                }
+            grocery_list_items_list.append(
+                (
+                    grocery_list_item.name,
+                    grocery_list_item.description,
+                    str(grocery_list_item.rate_measurement_quantity),
+                    grocery_list_item.rate_measurement_unit,
+                    str(grocery_list_item.rate),
+                    grocery_list_item.quantity_measurement_unit,
+                    str(grocery_list_item.quantity),
+                    str(grocery_list_item.price),
+                )
             )
 
-        document_file_name = f"{grocery_list.name}-{datetime.datetime.now()}.pdf"
-
-        document_generation_scheduler_api_headers = {
-            "Authorization": f"Bearer {PDFMONKEY_ENV_VARS['PDFMONKEY_API_KEY']}",
-            "Content-Type": "application/json",
-        }
-
-        document_generation_scheduler_api_payload = json.dumps(
-            {
-                "document": {
-                    "document_template_id": PDFMONKEY_ENV_VARS[
-                        "PDFMONKEY_GROCERY_LIST_SUMMARY_DOCUMENT_TEMPLATE_ID"
-                    ],
-                    "payload": grocery_list_dict,
-                    "status": "pending",
-                    "meta": {"_filename": document_file_name},
-                }
-            }
+        output = generate_grocery_list_summary(
+            grocery_list.name,
+            grocery_list.total_price,
+            grocery_list_items_list,
+            grocery_list.description,
         )
 
-        try:
-            document_generation_scheduler_api_response = requests.request(
-                "POST",
-                f"{PDFMONKEY_ENV_VARS['PDFMONKEY_API_BASE_URL']}/{PDFMONKEY_ENV_VARS['PDFMONKEY_API_PREFIX']}/{PDFMONKEY_ENV_VARS['PDFMONKEY_API_VERSION']}/documents",
-                headers=document_generation_scheduler_api_headers,
-                data=document_generation_scheduler_api_payload
-            )
-        except requests.exceptions.HTTPError as http_err:
-            return Response({"detail": "Internal Server Error"}, status=500)
-        
-        except requests.exceptions.ConnectionError as conn_err:
-            return Response({"detail": "Internal Server Error"}, status=500)
-            
-        except requests.exceptions.Timeout as timeout_err:
-            return Response({"detail": "Internal Server Error"}, status=500)
-        
-        except requests.exceptions.RequestException as err:
-            return Response({"detail": "Internal Server Error"}, status=500)
-        
-        if not document_generation_scheduler_api_response.status_code == 201:
-            return Response({"detail": "Internal Server Error"}, status=500)
+        bytes_io = BytesIO(output)
 
-        try:
-            document_generation_scheduler_api_response_json = document_generation_scheduler_api_response.json()
-        except requests.exceptions.JSONDecodeError:
-            return Response({"detail": "Internal Server Error"}, status=500)
-        
-        try:
-            document_id = document_generation_scheduler_api_response_json["document"]["id"]
-        except KeyError:
-            return Response({"detail": "Internal Server Error"}, status=500)
-        
-        time_elapsed = 1
+        summary_file = File(bytes_io)
 
-        while time_elapsed < 5:
-            try:
-                document_generation_document_getter_api_response = requests.request(
-                    "GET",
-                    f"{PDFMONKEY_ENV_VARS['PDFMONKEY_API_BASE_URL']}/{PDFMONKEY_ENV_VARS['PDFMONKEY_API_PREFIX']}/{PDFMONKEY_ENV_VARS['PDFMONKEY_API_VERSION']}/document_cards/{document_id}",
-                    headers=document_generation_scheduler_api_headers
-                )
-            except requests.exceptions.HTTPError as http_err:
-                return Response({"detail": "Internal Server Error"}, status=500)
-
-            except requests.exceptions.ConnectionError as conn_err:
-                return Response({"detail": "Internal Server Error"}, status=500)
-                
-            except requests.exceptions.Timeout as timeout_err:
-                return Response({"detail": "Internal Server Error"}, status=500)
-
-            except requests.exceptions.RequestException as err:
-                return Response({"detail": "Internal Server Error"}, status=500)
-
-            if not document_generation_document_getter_api_response.status_code == 200:
-                return Response({"detail": "Internal Server Error"}, status=500)
-            
-            try:
-                document_generation_document_getter_api_response_json = document_generation_document_getter_api_response.json()
-            except requests.exceptions.JSONDecodeError:
-                return Response({"detail": "Internal Server Error"}, status=500)
-
-            try:
-                download_url = document_generation_document_getter_api_response_json["document_card"]["download_url"]
-            except KeyError:
-                return Response({"detail": "Internal Server Error"}, status=500)
-            
-            if download_url is None:
-                time.sleep(1)
-
-                time_elapsed += 1
-
-                continue
-
-            return Response({"download_url": download_url}, status=200)
+        return FileResponse(summary_file, content_type="application/pdf")
