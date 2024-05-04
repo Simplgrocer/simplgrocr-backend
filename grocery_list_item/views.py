@@ -45,7 +45,7 @@ class GroceryListItemViewSet(ModelViewSet):
 
         grocery_list = old_price.grocery_list
 
-        grocery_list.price = (
+        grocery_list.total_price = (
             grocery_list.total_price - old_price.price + request.data["price"]
         )
 
