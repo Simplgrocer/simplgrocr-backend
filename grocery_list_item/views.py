@@ -20,13 +20,18 @@ class GroceryListItemViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         request.data["grocery_list"] = self.kwargs["grocery_list_pk"]
 
+        response = super().create(request, *args, **kwargs)
+
+        if response.status_code != 201:
+            return response
+
         grocery_list = GroceryList.objects.get(pk=self.kwargs["grocery_list_pk"])
 
         grocery_list.total_price += request.data["price"]
 
         grocery_list.save()
 
-        return super().create(request, *args, **kwargs)
+        return response
 
     @transaction.atomic
     def update(self, request, *args, **kwargs):
@@ -50,10 +55,14 @@ class GroceryListItemViewSet(ModelViewSet):
 
     @transaction.atomic
     def destroy(self, request, *args, **kwargs):
+        response = super().destroy(request, *args, **kwargs)
+
+        if not response.status_code == 204:
+            return response
+        
         grocery_list = self.get_object().grocery_list
 
         grocery_list.total_price -= self.get_object().price
 
         grocery_list.save()
 
-        return super().destroy(request, *args, **kwargs)
