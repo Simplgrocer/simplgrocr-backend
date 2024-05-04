@@ -55,14 +55,10 @@ class GroceryListItemViewSet(ModelViewSet):
 
     @transaction.atomic
     def destroy(self, request, *args, **kwargs):
-        response = super().destroy(request, *args, **kwargs)
-
-        if not response.status_code == 204:
-            return response
-        
         grocery_list = self.get_object().grocery_list
 
         grocery_list.total_price -= self.get_object().price
 
         grocery_list.save()
-
+    
+        return super().destroy(request, *args, **kwargs)
