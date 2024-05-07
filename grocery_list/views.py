@@ -12,15 +12,6 @@ from django.core.files import File
 from django.http import FileResponse
 
 
-PDFMONKEY_ENV_VARS = get_env_vars(
-    "PDFMONKEY_API_KEY",
-    "PDFMONKEY_API_BASE_URL",
-    "PDFMONKEY_API_PREFIX",
-    "PDFMONKEY_API_VERSION",
-    "PDFMONKEY_GROCERY_LIST_SUMMARY_DOCUMENT_TEMPLATE_ID",
-)
-
-
 class GroceryListViewSet(ModelViewSet):
     queryset = GroceryList.objects.all()
     serializer_class = GroceryListSerializer
