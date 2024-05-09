@@ -9,6 +9,8 @@ from drf_spectacular.views import (
 
 prefix = "api/"
 
+
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path(

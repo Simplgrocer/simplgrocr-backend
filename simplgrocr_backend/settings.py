@@ -29,7 +29,7 @@ DEBUG = True
 #     "https://simplgrocr.netlify.app/",
 # ]
 
-ALLOWED_HOSTS=['*']
+ALLOWED_HOSTS = ["*"]
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
+    "user",
     "grocery_list",
     "grocery_list_item",
 ]
@@ -100,6 +101,12 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+DJOSER = {
+    "SERIALIZERS": {
+        "current_user": "user.serializers.CustomUserSerializer",
+    }
 }
 
 SPECTACULAR_SETTINGS = {
