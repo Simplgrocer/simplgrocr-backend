@@ -18,6 +18,8 @@ grocery_list_router.register(
 )
 
 urlpatterns = [
+    path("", include("djoser.urls")),
+    path("", include("djoser.urls.authtoken")),
     path("users/", include(router.urls)),
     path("users/", include(grocery_list_router.urls)),
 ]

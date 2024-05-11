@@ -10,7 +10,6 @@ from drf_spectacular.views import (
 prefix = "api/"
 
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path(
@@ -29,7 +28,6 @@ urlpatterns = [
                     name="redoc",
                 ),
                 path("", include("grocery_list.urls")),
-                # path("", include("list_item.urls")),
                 path("", include("user.urls")),
             ]
         ),
