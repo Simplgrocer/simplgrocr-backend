@@ -28,7 +28,7 @@ urlpatterns = [
                     name="redoc",
                 ),
                 path("", include("grocery_list.urls")),
-                path("", include("user.urls")),
+                # path("", include("user.urls")),
             ]
         ),
     ),
