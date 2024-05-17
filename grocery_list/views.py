@@ -18,6 +18,8 @@ class GroceryListViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        print(1)
+        print(GroceryList.objects)
         return GroceryList.objects.filter(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
